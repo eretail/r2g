@@ -112,6 +112,7 @@ public class H2CommandLine{
         String[] cmdLine = Arrays.copyOf(list.toArray(), list.toArray().length, String[].class);*/
 		
         do {
+        		logger.info(line);
         	    String[] cmdLine = line.split("\"?( |$)(?=(([^\"]*\"){2})*[^\"]*$)\"?");
         		try {
         		String url = "http://localhost:8888/h2/";

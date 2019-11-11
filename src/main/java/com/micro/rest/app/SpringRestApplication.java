@@ -67,6 +67,5 @@ public class SpringRestApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		r2gSvc.clean();
 		System.out.print("WebService has started, Please bring up your client..");
-
 	}
 }
