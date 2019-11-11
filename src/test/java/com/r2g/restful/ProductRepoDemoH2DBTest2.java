@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.r2g.restful;
 
 import java.util.List;
 
