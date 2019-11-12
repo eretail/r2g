@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -35,6 +34,7 @@ import com.micro.rest.model.h2.Warehouse;
 @EnableJpaRepositories(basePackages = {"com.micro.rest.jpa.db.h2"})
 @EnableDynamoDBRepositories(basePackages = {"com.micro.rest.jpa.db.dynamodb"})
 @EnableAutoConfiguration
+@Component
 public class H2CommandLine implements CommandLineRunner {
     private static final Logger logger = LogManager.getLogger(H2CommandLine.class);
 
@@ -77,7 +77,8 @@ public class H2CommandLine implements CommandLineRunner {
 	        return new HttpEntity<String>(headers);
 		}
 
-	public static void main(String[] args) {
+	@Override
+	public void run(String... args) throws Exception {
 		RestTemplate restTemplate = new RestTemplate();
 
 		Scanner scanner = new Scanner(System.in);
@@ -230,11 +231,5 @@ public class H2CommandLine implements CommandLineRunner {
 	
 		logger.info("Ended");
         scanner.close();
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		System.out.println("command error, please check your syntax");
-		
 	}	
 }
