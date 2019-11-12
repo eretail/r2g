@@ -1,15 +1,11 @@
 package com.r2g.restful;
 
-import java.util.List;
-
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -20,7 +16,7 @@ import com.micro.rest.jpa.db.h2.ProductRepo;
 //import com.micro.rest.jpa.db.dynamodb.ProductRepo;
 import com.micro.rest.model.dynamodb.Product;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ProductRepoDemoH2DBTest2.class)
 @WebAppConfiguration
 @ActiveProfiles("local")
