@@ -38,14 +38,14 @@ public class ProductRepoDemoDynamoDBTest {
  
     @Before(value = "")
     public void setup() throws Exception {
-        dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
+/*        dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
          
         CreateTableRequest tableRequest = dynamoDBMapper
           .generateCreateTableRequest(Product.class);
         tableRequest.setProvisionedThroughput(
           new ProvisionedThroughput(1L, 1L));
         amazonDynamoDB.createTable(tableRequest);
-         
+*/         
         //...
  
 //        dynamoDBMapper.batchDelete
@@ -54,7 +54,7 @@ public class ProductRepoDemoDynamoDBTest {
  
     @Test
     public void sampleTestCase() {
-        Product dave = new Product(EXPECTED_COST, EXPECTED_PRICE);
+//        Product dave = new Product(EXPECTED_COST, EXPECTED_PRICE);
 /*        repository.save(dave);
  
         List<Product> result 
