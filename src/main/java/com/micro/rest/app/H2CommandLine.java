@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
@@ -34,7 +35,7 @@ import com.micro.rest.model.h2.Warehouse;
 @EnableJpaRepositories(basePackages = {"com.micro.rest.jpa.db.h2"})
 @EnableDynamoDBRepositories(basePackages = {"com.micro.rest.jpa.db.dynamodb"})
 @EnableAutoConfiguration
-public class H2CommandLine{
+public class H2CommandLine implements CommandLineRunner {
     private static final Logger logger = LogManager.getLogger(H2CommandLine.class);
 
 	static final String ADD_PRODUCT = "ADD PRODUCT";
@@ -229,5 +230,11 @@ public class H2CommandLine{
 	
 		logger.info("Ended");
         scanner.close();
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		System.out.println("command error, please check your syntax");
+		
 	}	
 }
