@@ -25,13 +25,13 @@ import com.micro.rest.model.dynamodb.Product;
   "amazon.aws.secretkey=test231" })
 public class ProductRepoDemoDynamoDBTest {
  
-    private DynamoDBMapper dynamoDBMapper;
+    
  
-    @Autowired
-    private AmazonDynamoDB amazonDynamoDB;
- 
-    @Autowired
-    ProductRepo repository;
+//    @Autowired
+//    private AmazonDynamoDB amazonDynamoDB;
+//	private DynamoDBMapper dynamoDBMapper;
+//    @Autowired
+//    ProductRepo repository;
  
     private static final String EXPECTED_COST = "20";
     private static final String EXPECTED_PRICE = "50";
