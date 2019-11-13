@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.micro.rest.model.WarehouseItem;
 import com.micro.rest.model.h2.Product;
+import com.micro.rest.model.h2.Stock;
 import com.micro.rest.model.h2.Warehouse;
 
 @EntityScan(basePackages = {"com.micro.rest"} )
@@ -45,6 +46,7 @@ public class H2CommandLine implements CommandLineRunner {
 	static final String LIST_PRODUCTS = "LIST PRODUCTS";
 	static final String LIST_WAREHOUSES = "LIST WAREHOUSES";
 	static final String LIST_WAREHOUSE = "LIST WAREHOUSE";
+	static final String LIST_STOCK = "LIST STOCK";
 	static final String USER_NAME = "client";
 	static final String PASSWORD = "client";
 	
@@ -56,6 +58,7 @@ public class H2CommandLine implements CommandLineRunner {
 		commandList.add(STOCK);
 		commandList.add(UNSTOCK);
 		commandList.add(LIST_PRODUCTS);
+		commandList.add(LIST_STOCK);
 		commandList.add(LIST_WAREHOUSE);
 		commandList.add(LIST_WAREHOUSES);
 	}
@@ -75,16 +78,21 @@ public class H2CommandLine implements CommandLineRunner {
 			headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
 			
 	        return new HttpEntity<String>(headers);
-		}
-
+	}
+	
+	static public void main(String... args) throws Exception {
+		H2CommandLine h2command = new H2CommandLine();
+		h2command.run(args);
+	}
+	
 	@Override
 	public void run(String... args) throws Exception {
 		RestTemplate restTemplate = new RestTemplate();
 
 		Scanner scanner = new Scanner(System.in);
 		
-		H2CommandLine h2Command = new H2CommandLine();
-		HttpEntity<String>  entity=h2Command.createEntity();
+		H2CommandLine h2CommandLine = new H2CommandLine();
+		HttpEntity<String>  entity=h2CommandLine.createEntity();
 		
 /*		do {
 			System.out.print("Please Choice you prefered database, 1:SQL or 2:noSQL");
@@ -103,7 +111,7 @@ public class H2CommandLine implements CommandLineRunner {
 				isMicroservice=(svcPick==2?true:false),
 				isCommand=(svcPick==1?true:false);
 		*/
-		System.out.println(">");
+		System.out.print(">");
 		
         String line = scanner.nextLine();
         /*List<String> list = new ArrayList<String>();
@@ -185,6 +193,21 @@ public class H2CommandLine implements CommandLineRunner {
 	        		else 
 	        			System.out.println("command error, please check your syntax");
 	        	}
+	        	else if(cmd.equals(LIST_STOCK)){
+	        		if(cmdLine.length == 2) {
+		        		url = url.concat("stocks/");
+
+		        		ResponseEntity<String> response = restTemplate.exchange(url,HttpMethod.GET, entity, String.class);
+        		        String result = response.getBody();
+
+        		        Gson gson = new Gson();        		       
+        		        List<Stock> stocks=gson.fromJson(result, new TypeToken<List<Stock>>(){}.getType());
+        		       
+        		        if(stocks!=null&&!stocks.isEmpty()) stocks.stream().forEach(System.out::println);
+	        		}
+	        		else 
+	        			System.out.println("command error, please check your syntax");
+	        	}
 	        	else if(cmd.equals(LIST_WAREHOUSES)){
 	        		if(cmdLine.length == 2) {
 		        		url=url.concat("warehouses/");
@@ -194,8 +217,10 @@ public class H2CommandLine implements CommandLineRunner {
         		       Gson gson = new Gson();        		       
        		           List<Warehouse> whss=gson.fromJson(result, new TypeToken<List<Warehouse>>(){}.getType());
        		       
-       		           if(whss!=null&&!whss.isEmpty()) 
-       		        	   whss.stream().forEach(System.out::println);       			
+       		           if(whss!=null&&!whss.isEmpty()) {
+       		        	   System.out.println("WAREHOUSES");
+       		        	   whss.stream().forEach(System.out::println);
+       		           }
 	        		}
 	        		else 
 	        			System.out.println("command error, please check your syntax");
@@ -208,11 +233,12 @@ public class H2CommandLine implements CommandLineRunner {
 	        			String result = response.getBody();
 
         		       Gson gson = new Gson();        		
-//        		       Warehouse whs=gson.fromJson(result,Warehouse.class);
        		           List<WarehouseItem> whsi=gson.fromJson(result, new TypeToken<List<WarehouseItem>>(){}.getType());
-       		       
-       		           if(whsi!=null&&!whsi.isEmpty()) 
-       		        	   whsi.stream().forEach(System.out::println);       			
+       		           
+       		           if(whsi!=null&&!whsi.isEmpty()) {
+       		        	System.out.println(String.format("%1$-50s %2$-50s %3$-5s\"",  "ITEM NAME", "ITEM_SKU", "QTY"));
+       		        	   whsi.stream().forEach(System.out::println);
+       		           }
 	        		}
 	        		else 
 	        			System.out.println("command error, please check your syntax");
@@ -226,7 +252,8 @@ public class H2CommandLine implements CommandLineRunner {
 		        System.out.print(">");
 		        line = scanner.nextLine();
 		        cmdLine=line.split(" ");
-
+		        if("exit".equals(line)) 
+		        	System.exit(5); 
 	        }while(!"x".equals(line));
 	
 		logger.info("Ended");

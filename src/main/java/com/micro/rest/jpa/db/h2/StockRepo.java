@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.micro.rest.model.WarehouseItem;
+import com.micro.rest.model.h2.Product;
 import com.micro.rest.model.h2.Stock;
 import com.micro.rest.model.id.StockId;
 
@@ -19,4 +20,9 @@ public interface StockRepo extends JpaRepository<Stock, StockId>{
 	List<Stock> findWarehouseItem(@Param("num") Integer num);
 	
 	List<Stock> findByWsNum(int num);
+	
+	List<Product> findProductsByWsNum(int num);
+	
+	@Query("select s.p from h2Stock s where s.wsNum=:whsNum")
+	List<Product> getTotalProductsStockedInWarehouse(int num);
 }

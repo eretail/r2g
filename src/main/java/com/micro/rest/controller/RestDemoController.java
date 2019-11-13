@@ -45,7 +45,7 @@ public class RestDemoController {
 		
 		if(r2gSvc.hasWarehouse(whsNum)) return -1; 
 		
-		r2gSvc.addWarehouse(whsNum, 0);
+		r2gSvc.addWarehouse(whsNum, 100000000);
 		return 1;
 	}
 
@@ -81,6 +81,11 @@ public class RestDemoController {
 		return r2gSvc.getAllProducts();
 	}
 
+	@GetMapping("/stocks")
+	public List<Stock> getAllStocks(){
+		return r2gSvc.findAllStockItems();
+	}
+
 	@GetMapping("/warehouses")
 	public List<Warehouse> getAllWarehouses(){
 		return r2gSvc.getAllWarehouses();
@@ -88,7 +93,6 @@ public class RestDemoController {
 
 	@GetMapping("/warehouses/{wsNum}")
 	public List<WarehouseItem> getWarehouseItem(@PathVariable("wsNum") Integer wsNum){
-//		List<Stock> stocks=r2gSvc.getWarehouseStock(wsNum);
 		List<Stock> stocks=r2gSvc.findAllStockItems();
 		List<WarehouseItem> whList =new ArrayList<WarehouseItem>();
 		if(stocks!=null && !stocks.isEmpty() && stocks.get(0).getProdSKU()!=null) {

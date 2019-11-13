@@ -26,6 +26,25 @@ public class Stock {
 	public Stock(){
 	}
 	
+	private Product product;
+	private Warehouse warehouse;
+	
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public Warehouse getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(Warehouse warehouse) {
+		this.warehouse = warehouse;
+	}
+
 	public Stock(String prodSKU, int wsNum, int prodQty){
 		this.prodSKU=prodSKU;
 		this.wsNum=wsNum;

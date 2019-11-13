@@ -12,6 +12,7 @@ import com.micro.rest.jpa.db.h2.WarehouseRepo;
 import com.micro.rest.model.h2.Product;
 import com.micro.rest.model.h2.Stock;
 import com.micro.rest.model.h2.Warehouse;
+import com.micro.rest.model.id.StockId;
 
 @Service
 public class R2GH2Svc {
@@ -49,14 +50,54 @@ public class R2GH2Svc {
 		return (productRepo.findBySKU(sku)==null||productRepo.findBySKU(sku).isEmpty())?null:productRepo.findBySKU(sku).get(0);
 	}
 
-	public void stock(String sku, Integer whsNum, Integer qty) {
-		Stock st = new Stock(sku, whsNum, qty);
-		stockRepo.saveAndFlush(st);
+	public int stock(String sku, Integer whsNum, Integer qty) {
+		
+		int stkQty=0;
+		List<Stock> stkList= stockRepo.findByWsNum(whsNum);
+		Stock stk=stockRepo.getOne(new StockId(sku,whsNum));
+		Warehouse whs=warehouseRepo.getOne(whsNum);
+
+		List<Product> prodList = stockRepo.getTotalProductsStockedInWarehouse(whsNum);
+		List<Product> prodList2= stockRepo.findProductsByWsNum(whsNum);
+		int stkProdCnt = prodList2.size();
+		
+		if(stk!=null) stkQty = stk.getProdQty();		
+		int whsCurrentStockedProdQty = stkList.stream().mapToInt(c->c.getProdQty()).sum();		
+		int whsLimit = whs.getlimitQty();
+		
+		if( whsLimit > whsCurrentStockedProdQty) { 				// there are space available to stock
+			if( whsLimit >= whsCurrentStockedProdQty + qty) {   //all in
+				qty=qty+stkQty;
+			}else {
+				qty=whsLimit-whsCurrentStockedProdQty ;
+			}
+			if(stk!=null) stk.setProdQty(qty);       			//only update stock quantity
+			else stk = new Stock(sku, whsNum, qty);
+					stockRepo.save(stk);
+			return qty;//partially stocked
+		}
+		else return -1;
 	}
 
-	public void unstock(String sku, Integer whsNum, Integer qty) {
-		Stock st = new Stock(sku, whsNum, qty);
-		stockRepo.delete(st);
+	public int unstock(String sku, Integer whsNum, Integer qty) {
+		try {
+			int stkQty=0;
+
+			Stock stk=stockRepo.getOne(new StockId(sku,whsNum));
+			if(stk!=null) stkQty = stk.getProdQty();		
+			
+			qty= (stkQty >= qty)?stkQty - qty:0; 					// there are enough products to unstock
+	
+			if(stk==null) return 0;
+			
+			stk.setProdQty(qty); 				      				//only update stock quantity
+			
+			if(qty==0) stockRepo.delete(stk);
+			else stockRepo.save(stk);
+			return qty;
+		}catch(Exception e) {
+			return -1;
+		}
 	}
 
 	public void addWarehouse(int num, int qty){
@@ -76,7 +117,6 @@ public class R2GH2Svc {
 	}
 
 	public List<Stock> getWarehouseStock(int num){
-//		 return stockRepo.findByWsNum(num);
 		 return stockRepo.findWarehouseItem(num);
 	}
 

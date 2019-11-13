@@ -47,6 +47,7 @@ public class SpringRestApplication implements CommandLineRunner{
 	static final String LIST_PRODUCTS = "LIST_PRODUCTS";
 	static final String LIST_WAREHOUSES = "LIST_WAREHOUSES";
 	static final String LIST_WAREHOUSE = "LIST_WAREHOUSE";
+	static final String LIST_STOCK = "LIST STOCK";
 	
 	static List<String> commandList=new ArrayList<String>();
 	
@@ -58,6 +59,7 @@ public class SpringRestApplication implements CommandLineRunner{
 		commandList.add(LIST_PRODUCTS);
 		commandList.add(LIST_WAREHOUSE);
 		commandList.add(LIST_WAREHOUSES);
+		commandList.add(LIST_STOCK);
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(SpringRestApplication.class, args);

@@ -59,6 +59,6 @@ public class WarehouseItem implements Serializable {
 	
 	@Override
 	public String toString() {
-		return this.itemName + " " + itmSku + " "+ qty;
+		return String.format("%1$-50s %2$-50s %3$-5s",  itemName, itmSku, qty);
 	}
 }
