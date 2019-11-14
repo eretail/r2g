@@ -2,25 +2,20 @@ package com.micro.rest.model.id;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Embeddable;
 
-import org.hibernate.annotations.DynamicUpdate;
-
-public class StockId  implements Serializable {
-	@Id
-	private String prodSKU;
-	@Id
+@Embeddable
+public class StockId implements Serializable {
+	
+	private String prodSku;
 	private int wsNum;
 	
 	public String getProdSKU() {
-		return prodSKU;
+		return prodSku;
 	}
 
 	public void setProdSKU(String prodSKU) {
-		this.prodSKU = prodSKU;
+		this.prodSku = prodSKU;
 	}
 
 	public int getWsNum() {
@@ -35,7 +30,7 @@ public class StockId  implements Serializable {
 	}
 	
 	public StockId(String prodSKU, int wsNum){
-		this.prodSKU=prodSKU;
+		this.prodSku=prodSKU;
 		this.wsNum=wsNum;
 	}
 	
@@ -44,7 +39,7 @@ public class StockId  implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((prodSKU == null) ? 0 : prodSKU.hashCode());
+				+ ((prodSku == null) ? 0 : prodSku.hashCode());
 		return result;
 	}
 
@@ -59,10 +54,10 @@ public class StockId  implements Serializable {
 		
 		StockId other = (StockId) obj;
 		
-		if (prodSKU == null) {
+		if (prodSku == null) {
 			if (other.getProdSKU() != null)
 				return false;
-		} else if (!prodSKU.equals(other.getProdSKU()))
+		} else if (!prodSku.equals(other.getProdSKU()))
 			return false;
 		
 		return wsNum == other.getWsNum();

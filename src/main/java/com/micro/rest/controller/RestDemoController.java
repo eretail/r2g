@@ -2,6 +2,7 @@ package com.micro.rest.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,8 +37,8 @@ public class RestDemoController {
 	}
 	
 	@PutMapping("/warehouse/{whsNum}/{limit}")
-	public void addWarehouse(@PathVariable("whsNum") Integer whsNum, @PathVariable("limit") Integer limit){
-		r2gSvc.addWarehouse(whsNum, limit);
+	public int addWarehouse(@PathVariable("whsNum") Integer whsNum, @PathVariable("limit") Integer limit){
+		return r2gSvc.addWarehouse(whsNum, limit);
 	}
 
 	@PutMapping("/warehouse/{whsNum}")
@@ -72,7 +73,6 @@ public class RestDemoController {
 		catch (Exception e) {
 			return 0;
 		}
-		
 		return 1;
 	}
 	
@@ -95,10 +95,15 @@ public class RestDemoController {
 	public List<WarehouseItem> getWarehouseItem(@PathVariable("wsNum") Integer wsNum){
 		List<Stock> stocks=r2gSvc.findAllStockItems();
 		List<WarehouseItem> whList =new ArrayList<WarehouseItem>();
-		if(stocks!=null && !stocks.isEmpty() && stocks.get(0).getProdSKU()!=null) {
-			Product prod=r2gSvc.getProduct(stocks.get(0).getProdSKU());
-			if(prod!=null)
-				whList.add(new WarehouseItem( prod.getName(), wsNum, prod.getSku(), stocks.get(0).getProdQty()));
+		if(stocks!=null && !stocks.isEmpty() && stocks.get(0).getStockId().getProdSKU()!=null) {
+			whList= stocks.stream().map(c-> new WarehouseItem( 
+					r2gSvc.getProduct( c.getStockId().getProdSKU() ).getName(), wsNum, r2gSvc.getProduct(c.getStockId().getProdSKU()).getSku(), 
+					c.getProdQty() )).collect(Collectors.toList());
+			
+//			Product prod=r2gSvc.getProduct(stocks.get(0).getStockId().getProdSKU());
+//			if(prod!=null)
+//				whList.add(new WarehouseItem( prod.getName(), wsNum, prod.getSku(), stocks.get(0).getProdQty()));
+		
 		}
 		return whList;
 	}		

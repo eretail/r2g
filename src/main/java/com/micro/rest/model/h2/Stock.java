@@ -1,10 +1,9 @@
 package com.micro.rest.model.h2;
 
+import java.io.Serializable;
+
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,21 +11,28 @@ import com.micro.rest.model.id.StockId;
 
 @DynamicUpdate
 @Entity(name="h2Stock")
-@IdClass(StockId.class)
-public class Stock {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long id;
-	
-	@Id
-	private String prodSKU;
-	@Id
-	private int wsNum;
+public class Stock implements Serializable {
+	@EmbeddedId
+	private StockId stockId;
+
+	public Stock(StockId id, int qty) {
+		this.stockId=new StockId();
+		this.stockId.setProdSKU(id.getProdSKU());
+		this.stockId.setWsNum(id.getWsNum());
+		this.prodQty=qty;
+	}
+	public StockId getStockId() {
+		return stockId;
+	}
+
+	public void setStockId(StockId stockId) {
+		this.stockId = stockId;
+	}
 
 	public Stock(){
 	}
 	
-	private Product product;
+/*	private Product product;
 	private Warehouse warehouse;
 	
 	public Product getProduct() {
@@ -44,8 +50,8 @@ public class Stock {
 	public void setWarehouse(Warehouse warehouse) {
 		this.warehouse = warehouse;
 	}
-
-	public Stock(String prodSKU, int wsNum, int prodQty){
+*/	
+/*	public Stock(String prodSKU, int wsNum, int prodQty){
 		this.prodSKU=prodSKU;
 		this.wsNum=wsNum;
 		this.prodQty=prodQty;
@@ -66,7 +72,7 @@ public class Stock {
 	public void setWsNum(int wsNum) {
 		this.wsNum = wsNum;
 	}
-
+*/
 	public int getProdQty() {
 		return prodQty;
 	}
@@ -78,6 +84,6 @@ public class Stock {
 	
 	@Override
 	public String toString() {
-		return "Stock id=" + id + ", warehouse number =" + wsNum + ", prodQty " + prodQty;
+		return "Stock's warehouse is:" + stockId.getWsNum() +" "+" product sku:" + stockId.getProdSKU() + ", total stocked count:" + prodQty;
 	}
 }

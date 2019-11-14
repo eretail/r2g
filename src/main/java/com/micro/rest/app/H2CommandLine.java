@@ -150,6 +150,9 @@ public class H2CommandLine implements CommandLineRunner {
 
         		       if("-1".equals(result)) 
         		    	   System.out.println("ERROR ADDING WAREHOUSE WAREHOUSE with " + cmdLine[2] + " ALREADY EXISTS");
+        		       if("-2".equals(result)) 
+        		    	   System.out.println("ERROR ADDING WAREHOUSE LIMIT, THE LIMIT LESS THAN CURRENT STOCKED PRODUCT SIZE");
+
 	        		}
 	        		else 
 	        			System.out.println("command error, please check your syntax");
@@ -236,7 +239,7 @@ public class H2CommandLine implements CommandLineRunner {
        		           List<WarehouseItem> whsi=gson.fromJson(result, new TypeToken<List<WarehouseItem>>(){}.getType());
        		           
        		           if(whsi!=null&&!whsi.isEmpty()) {
-       		        	System.out.println(String.format("%1$-50s %2$-50s %3$-5s\"",  "ITEM NAME", "ITEM_SKU", "QTY"));
+       		        	System.out.println(String.format("%1$-50s %2$-50s %3$-5s",  "ITEM NAME", "ITEM_SKU", "QTY"));
        		        	   whsi.stream().forEach(System.out::println);
        		           }
 	        		}

@@ -54,16 +54,14 @@ public class R2GH2Svc {
 		
 		int stkQty=0;
 		List<Stock> stkList= stockRepo.findByWsNum(whsNum);
-		Stock stk=stockRepo.getOne(new StockId(sku,whsNum));
-		Warehouse whs=warehouseRepo.getOne(whsNum);
-
-		List<Product> prodList = stockRepo.getTotalProductsStockedInWarehouse(whsNum);
-		List<Product> prodList2= stockRepo.findProductsByWsNum(whsNum);
-		int stkProdCnt = prodList2.size();
-		
-		if(stk!=null) stkQty = stk.getProdQty();		
 		int whsCurrentStockedProdQty = stkList.stream().mapToInt(c->c.getProdQty()).sum();		
-		int whsLimit = whs.getlimitQty();
+
+		Stock stk=stkList.stream().filter(c->sku.equals(c.getStockId().getProdSKU())).findFirst().orElse(null);
+		List<Warehouse> whss=warehouseRepo.findByWsNum(whsNum);
+		if(whss==null||whss.isEmpty()) return -1;
+		
+		if(stk!=null && stk.getStockId().getProdSKU()!=null) stkQty = stk.getProdQty();		
+		int whsLimit = whss.get(0).getlimitQty();
 		
 		if( whsLimit > whsCurrentStockedProdQty) { 				// there are space available to stock
 			if( whsLimit >= whsCurrentStockedProdQty + qty) {   //all in
@@ -71,10 +69,12 @@ public class R2GH2Svc {
 			}else {
 				qty=whsLimit-whsCurrentStockedProdQty ;
 			}
+
 			if(stk!=null) stk.setProdQty(qty);       			//only update stock quantity
-			else stk = new Stock(sku, whsNum, qty);
-					stockRepo.save(stk);
-			return qty;//partially stocked
+			else stk = new Stock(new StockId(sku, whsNum),qty);
+			
+			stockRepo.saveAndFlush(stk);
+			return qty;											//partially stocked
 		}
 		else return -1;
 	}
@@ -100,12 +100,20 @@ public class R2GH2Svc {
 		}
 	}
 
-	public void addWarehouse(int num, int qty){
+	public int addWarehouse(int num, int qty){
 		List<Warehouse> whs= warehouseRepo.findByWsNum(num);
+
+		List<Stock> stkList= stockRepo.findByWsNum(num);
+		int whsCurrentStockedProdQty = stkList.stream().mapToInt(c->c.getProdQty()).sum();		
+		
+		if(qty<whsCurrentStockedProdQty) return -2;
 		if (whs == null|| whs.isEmpty()) 
 			warehouseRepo.save(new Warehouse(num,qty));
-		else
-			warehouseRepo.save(whs.get(0));
+		else {
+			Warehouse wh = whs.get(0); wh.setlimitQty(qty);
+			warehouseRepo.save(wh);
+		}
+		return 1;
 	}
 
 	public List<Warehouse> getAllWarehouses(){
@@ -117,7 +125,7 @@ public class R2GH2Svc {
 	}
 
 	public List<Stock> getWarehouseStock(int num){
-		 return stockRepo.findWarehouseItem(num);
+		 return stockRepo.findByWsNum(num);
 	}
 
 	public List<Stock> findAllStockItems(){
