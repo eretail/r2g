@@ -11,7 +11,7 @@ import com.micro.rest.model.id.StockId;
 
 @DynamicUpdate
 @Entity(name="h2Stock")
-public class Stock implements Serializable {
+public class Stock{
 	@EmbeddedId
 	private StockId stockId;
 
@@ -84,6 +84,6 @@ public class Stock implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "Stock's warehouse is:" + stockId.getWsNum() +" "+" product sku:" + stockId.getProdSKU() + ", total stocked count:" + prodQty;
+		return "Stock's warehouse:" + stockId.getWsNum() +", product sku:" + stockId.getProdSKU() + ", total stocked product count:" + prodQty;
 	}
 }

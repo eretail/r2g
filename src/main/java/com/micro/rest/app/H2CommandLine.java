@@ -46,7 +46,7 @@ public class H2CommandLine implements CommandLineRunner {
 	static final String LIST_PRODUCTS = "LIST PRODUCTS";
 	static final String LIST_WAREHOUSES = "LIST WAREHOUSES";
 	static final String LIST_WAREHOUSE = "LIST WAREHOUSE";
-	static final String LIST_STOCK = "LIST STOCK";
+	static final String LIST_STOCK = "LIST STOCKS";
 	static final String USER_NAME = "client";
 	static final String PASSWORD = "client";
 	
@@ -176,7 +176,6 @@ public class H2CommandLine implements CommandLineRunner {
 	        			
 	        			   ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class);
 	        		       String result = response.getBody();
-//	        		       System.out.println(result);	        			
 	        		}
 	        		else 
 	        			System.out.println("command error, please check your syntax");
@@ -239,7 +238,7 @@ public class H2CommandLine implements CommandLineRunner {
        		           List<WarehouseItem> whsi=gson.fromJson(result, new TypeToken<List<WarehouseItem>>(){}.getType());
        		           
        		           if(whsi!=null&&!whsi.isEmpty()) {
-       		        	System.out.println(String.format("%1$-50s %2$-50s %3$-5s",  "ITEM NAME", "ITEM_SKU", "QTY"));
+       		        	   System.out.println(String.format("%1$-50s %2$-50s %3$-5s",  "ITEM NAME", "ITEM_SKU", "QTY"));
        		        	   whsi.stream().forEach(System.out::println);
        		           }
 	        		}

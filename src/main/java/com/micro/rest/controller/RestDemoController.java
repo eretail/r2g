@@ -83,7 +83,8 @@ public class RestDemoController {
 
 	@GetMapping("/stocks")
 	public List<Stock> getAllStocks(){
-		return r2gSvc.findAllStockItems();
+		List<Stock> stocks=r2gSvc.findAllStockItems();
+		return stocks;
 	}
 
 	@GetMapping("/warehouses")
@@ -96,14 +97,9 @@ public class RestDemoController {
 		List<Stock> stocks=r2gSvc.findAllStockItems();
 		List<WarehouseItem> whList =new ArrayList<WarehouseItem>();
 		if(stocks!=null && !stocks.isEmpty() && stocks.get(0).getStockId().getProdSKU()!=null) {
-			whList= stocks.stream().map(c-> new WarehouseItem( 
+			whList= stocks.stream().filter(c->c.getStockId().getWsNum()==wsNum).map(c-> new WarehouseItem( 
 					r2gSvc.getProduct( c.getStockId().getProdSKU() ).getName(), wsNum, r2gSvc.getProduct(c.getStockId().getProdSKU()).getSku(), 
 					c.getProdQty() )).collect(Collectors.toList());
-			
-//			Product prod=r2gSvc.getProduct(stocks.get(0).getStockId().getProdSKU());
-//			if(prod!=null)
-//				whList.add(new WarehouseItem( prod.getName(), wsNum, prod.getSku(), stocks.get(0).getProdQty()));
-		
 		}
 		return whList;
 	}		

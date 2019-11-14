@@ -73,7 +73,7 @@ public class R2GH2Svc {
 			if(stk!=null) stk.setProdQty(qty);       			//only update stock quantity
 			else stk = new Stock(new StockId(sku, whsNum),qty);
 			
-			stockRepo.saveAndFlush(stk);
+			stockRepo.save(stk);
 			return qty;											//partially stocked
 		}
 		else return -1;
