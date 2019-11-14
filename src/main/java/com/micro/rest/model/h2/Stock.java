@@ -1,7 +1,6 @@
 package com.micro.rest.model.h2;
 
-import java.io.Serializable;
-
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
@@ -51,7 +50,12 @@ public class Stock{
 		this.warehouse = warehouse;
 	}
 */	
-/*	public Stock(String prodSKU, int wsNum, int prodQty){
+	@Column(name="prodSku",insertable=false,updatable=false)
+	private String prodSKU;
+	@Column(name="wsNum",insertable=false,updatable=false)
+	private int wsNum;
+	
+	public Stock(String prodSKU, int wsNum, int prodQty){
 		this.prodSKU=prodSKU;
 		this.wsNum=wsNum;
 		this.prodQty=prodQty;
@@ -72,7 +76,7 @@ public class Stock{
 	public void setWsNum(int wsNum) {
 		this.wsNum = wsNum;
 	}
-*/
+
 	public int getProdQty() {
 		return prodQty;
 	}
@@ -84,6 +88,6 @@ public class Stock{
 	
 	@Override
 	public String toString() {
-		return "Stock's warehouse:" + stockId.getWsNum() +", product sku:" + stockId.getProdSKU() + ", total stocked product count:" + prodQty;
+		return "Stock's warehouse:" + getWsNum() +", product sku:" + getProdSKU() + ", total stocked product count:" + prodQty;
 	}
 }
