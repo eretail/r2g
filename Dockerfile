@@ -1,6 +1,8 @@
+FROM maven:3.5-jdk-8-alpine
+RUN mvn clean install
+
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-RUN apt-get mvn
 RUN mvn clean install
 ADD target/r2g-1.0.jar target/app.jar
 RUN bash -c 'touch target/app.jar'
