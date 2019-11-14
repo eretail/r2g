@@ -2,7 +2,7 @@ FROM maven:3.5-jdk-8-alpine
 WORKDIR /r2g
 RUN pwd
 RUN ls
-RUN mvn clean install
+RUN mvn clean install 
 
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
