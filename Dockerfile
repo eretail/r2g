@@ -1,4 +1,4 @@
-FROM dockerfile/java:oracle-java8
+FROM openjdk:8-jdk-alpine
 VOLUME /tmp
 ADD target/r2g-1.0.jar target/app.jar
 RUN bash -c 'touch target/app.jar'
