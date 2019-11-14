@@ -96,6 +96,7 @@ public class RestDemoController {
 	public List<WarehouseItem> getWarehouseItem(@PathVariable("wsNum") Integer wsNum){
 		List<Stock> stocks=r2gSvc.findAllStockItems();
 		List<WarehouseItem> whList =new ArrayList<WarehouseItem>();
+		
 		if(stocks!=null && !stocks.isEmpty() && stocks.get(0).getStockId().getProdSKU()!=null) {
 			whList= stocks.stream().filter(c->c.getStockId().getWsNum()==wsNum).map(c-> new WarehouseItem( 
 					r2gSvc.getProduct( c.getStockId().getProdSKU() ).getName(), wsNum, r2gSvc.getProduct(c.getStockId().getProdSKU()).getSku(), 

@@ -87,9 +87,7 @@ public class R2GH2Svc {
 			if(stk!=null) stkQty = stk.getProdQty();		
 			
 			qty= (stkQty >= qty)?stkQty - qty:0; 					// there are enough products to unstock
-	
 			if(stk==null) return 0;
-			
 			stk.setProdQty(qty); 				      				//only update stock quantity
 			
 			if(qty==0) stockRepo.delete(stk);

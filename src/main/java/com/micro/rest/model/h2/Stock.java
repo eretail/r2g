@@ -31,25 +31,6 @@ public class Stock{
 	public Stock(){
 	}
 	
-/*	private Product product;
-	private Warehouse warehouse;
-	
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	public Warehouse getWarehouse() {
-		return warehouse;
-	}
-
-	public void setWarehouse(Warehouse warehouse) {
-		this.warehouse = warehouse;
-	}
-*/	
 	@Column(name="prodSku",insertable=false,updatable=false)
 	private String prodSKU;
 	@Column(name="wsNum",insertable=false,updatable=false)
