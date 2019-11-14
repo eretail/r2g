@@ -46,7 +46,7 @@ public class H2CommandLine implements CommandLineRunner {
 	static final String LIST_PRODUCTS = "LIST PRODUCTS";
 	static final String LIST_WAREHOUSES = "LIST WAREHOUSES";
 	static final String LIST_WAREHOUSE = "LIST WAREHOUSE";
-	static final String LIST_STOCK = "LIST STOCKS";
+	static final String LIST_STOCKS = "LIST STOCKS";
 	static final String USER_NAME = "client";
 	static final String PASSWORD = "client";
 	
@@ -58,7 +58,7 @@ public class H2CommandLine implements CommandLineRunner {
 		commandList.add(STOCK);
 		commandList.add(UNSTOCK);
 		commandList.add(LIST_PRODUCTS);
-		commandList.add(LIST_STOCK);
+		commandList.add(LIST_STOCKS);
 		commandList.add(LIST_WAREHOUSE);
 		commandList.add(LIST_WAREHOUSES);
 	}
@@ -195,7 +195,7 @@ public class H2CommandLine implements CommandLineRunner {
 	        		else 
 	        			System.out.println("command error, please check your syntax");
 	        	}
-	        	else if(cmd.equals(LIST_STOCK)){
+	        	else if(cmd.equals(LIST_STOCKS)){
 	        		if(cmdLine.length == 2) {
 		        		url = url.concat("stocks/");
 

@@ -66,11 +66,11 @@ public class R2GH2Svc {
 		if( whsLimit > whsCurrentStockedProdQty) { 				// there are space available to stock
 			if( whsLimit >= whsCurrentStockedProdQty + qty) {   //all in
 				qty=qty+stkQty;
-			}else {
-				qty=whsLimit-whsCurrentStockedProdQty ;
+			}else {												//only update stock quantity
+				qty=whsLimit-whsCurrentStockedProdQty + stkQty;
 			}
 
-			if(stk!=null) stk.setProdQty(qty);       			//only update stock quantity
+			if(stk!=null) stk.setProdQty(qty);       			
 			else stk = new Stock(new StockId(sku, whsNum),qty);
 			
 			stockRepo.save(stk);
